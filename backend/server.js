@@ -1,6 +1,5 @@
 const express = require('express');
 const http = require('http');
-const sqlite3 = require('sqlite3').verbose();
 const setupWebSocketServer = require('./sockets/chatSocket');
 const authRoutes = require('./routes/authRoutes');
 const path = require('path');
@@ -23,6 +22,7 @@ setupWebSocketServer(server);
 
 // Connect to the SQLite database
 db.serialize(() => {
+  // Create users table if it doesn't exist
   db.run(`
     CREATE TABLE IF NOT EXISTS users (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -30,7 +30,19 @@ db.serialize(() => {
       password TEXT NOT NULL
     )
   `);
-  console.log('Connected to the SQLite database and ensured user table exists.');
+
+  // Create chat_sessions table if it doesn't exist
+  db.run(`
+    CREATE TABLE IF NOT EXISTS chat_sessions (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      user_id INTEGER NOT NULL,
+      message TEXT NOT NULL,
+      timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,
+      FOREIGN KEY (user_id) REFERENCES users(id)
+    )
+  `);
+
+  console.log('Connected to the SQLite database and ensured user and chat_sessions tables exist.');
 });
 
 // Start the server
