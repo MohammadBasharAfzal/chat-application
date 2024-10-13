@@ -3,47 +3,47 @@
     padding: 0;
     box-sizing: border-box;
     font-family: Arial, sans-serif;
-  }
+}
   
-  body {
+body {
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
     background-color: #f4f4f4;
-  }
+}
   
-  .form-container {
+.form-container {
     background-color: #fff;
     padding: 20px;
     border-radius: 5px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     width: 300px;
     text-align: center;
-  }
+}
   
-  .hidden {
+.hidden {
     display: none;
-  }
+}
   
-  h2 {
+h2 {
     margin-bottom: 20px;
-  }
+}
   
-  label {
+label {
     display: block;
     margin-bottom: 5px;
-  }
+}
   
-  input {
+input {
     width: 100%;
     padding: 10px;
     margin-bottom: 20px;
     border: 1px solid #ccc;
     border-radius: 3px;
-  }
+}
   
-  button {
+button {
     width: 100%;
     padding: 10px;
     background-color: #5cb85c;
@@ -51,64 +51,93 @@
     border: none;
     border-radius: 3px;
     cursor: pointer;
-  }
+}
   
-  button:hover {
+button:hover {
     background-color: #4cae4c;
-  }
+}
   
-  p {
+p {
     margin-top: 10px;
-  }
+}
   
-  #chat-container {
+#chat-container {
     width: 400px;
     height: 500px;
     background-color: #fff;
     border-radius: 5px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     padding: 20px;
-  }
+}
   
-  #chat-box {
+#chat-box {
     height: 400px;
     overflow-y: scroll;
     border: 1px solid #ddd;
     padding: 10px;
     margin-bottom: 10px;
-  }
+}
   
-  #chat-messages {
+#chat-messages {
     list-style-type: none;
-  }
+}
   
-  #chat-messages li {
+#chat-messages li {
     margin-bottom: 10px;
-  }
+}
   
-  #chat-input {
+#chat-input {
     width: calc(100% - 80px);
     padding: 10px;
     margin-right: 10px;
     border: 1px solid #ccc;
     border-radius: 3px;
-  }
+}
   
-  #chat-form button {
+#chat-form button {
     padding: 10px 20px;
     background-color: #007bff;
     color: white;
     border: none;
     border-radius: 3px;
     cursor: pointer;
-  }
+}
   
-  #logout-button {
+#logout-button {
     margin-top: 10px;
     background-color: #d9534f;
-  }
+}
   
-  #logout-button:hover {
+#logout-button:hover {
     background-color: #c9302c;
-  }
-  
+} 
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+    #chat-container {
+        width: 90%;
+        height: auto; /* Allow height to adjust based on content */
+    }
+
+    #chat-box {
+        height: 300px; /* Reduce chat box height */
+    }
+
+    .form-container {
+        width: 90%; /* Use a larger percentage for mobile */
+    }
+}
+
+@media (max-width: 480px) {
+    #chat-container {
+        padding: 10px; /* Reduce padding for smaller screens */
+    }
+
+    button {
+        font-size: 0.9em; /* Slightly smaller buttons */
+    }
+
+    h2 {
+        font-size: 1.5em; /* Adjust heading size */
+    }
+}

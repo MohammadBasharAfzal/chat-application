@@ -18,7 +18,7 @@ document.addEventListener("DOMContentLoaded", function () {
       const password = document.getElementById("login-password").value;
   
       // Send login request to backend API
-      const response = await fetch("/auth/login", {
+      const response = await fetch("/api/auth/login", { // Updated API path
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -27,7 +27,7 @@ document.addEventListener("DOMContentLoaded", function () {
       });
   
       const data = await response.json();
-      if (data.success) {
+      if (response.ok) { // Check if response is successful
         // On successful login, connect to WebSocket server
         socket = new WebSocket(`ws://localhost:3000`);
   
@@ -56,12 +56,12 @@ document.addEventListener("DOMContentLoaded", function () {
         logoutButton.addEventListener("click", async function () {
           // Close WebSocket connection
           socket.close();
-          await fetch("/auth/logout", { method: "POST" });
+          await fetch("/api/auth/logout", { method: "POST" }); // Updated API path
           chatContainer.classList.add("hidden");
           loginContainer.classList.remove("hidden");
         });
       } else {
-        alert("Invalid login credentials");
+        alert(data.message || "Invalid login credentials"); // Display specific error message
       }
     });
   
@@ -72,7 +72,7 @@ document.addEventListener("DOMContentLoaded", function () {
       const password = document.getElementById("signup-password").value;
   
       // Send signup request to backend API
-      const response = await fetch("/auth/register", {
+      const response = await fetch("/api/auth/register", { // Updated API path
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -81,12 +81,12 @@ document.addEventListener("DOMContentLoaded", function () {
       });
   
       const data = await response.json();
-      if (data.success) {
+      if (response.ok) { // Check if response is successful
         alert("Signup successful! Please login.");
         signupContainer.classList.add("hidden");
         loginContainer.classList.remove("hidden");
       } else {
-        alert("Signup failed. Try again.");
+        alert(data.message || "Signup failed. Try again."); // Display specific error message
       }
     });
   
@@ -107,5 +107,4 @@ document.addEventListener("DOMContentLoaded", function () {
       messageElement.textContent = message;
       chatMessages.appendChild(messageElement);
     }
-  });
-  
+});
