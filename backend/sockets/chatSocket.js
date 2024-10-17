@@ -1,5 +1,6 @@
 const WebSocket = require('ws');
-const db = require('../config/db'); // Import the database connection
+const db = require('../config/db');
+const sessionManager = require('../utils/sessionManager'); // Session management
 
 // WebSocket server setup
 const setupWebSocketServer = (server) => {
@@ -10,23 +11,38 @@ const setupWebSocketServer = (server) => {
 
     // Listen for incoming messages from client
     ws.on('message', (message) => {
-      console.log('Received message:', message);
+      try {
+        // Parse the received message as JSON
+        const parsedMessage = JSON.parse(message);
+        const { text, sessionId } = parsedMessage;
 
-      // Echo the message back to the client
-      ws.send(`Echo: ${message}`);
+        console.log('Received message:', text, 'from session:', sessionId);
 
-      // Optionally, you can store the message in the database
-      // Here, we assume the message is just plain text
-      const userId = 1; // Replace with actual user ID logic
+        // Echo the message back to the client in JSON format
+        ws.send(JSON.stringify({ sessionId, text: `Echo: ${text}` }));
 
-      // Save the message to the chat_sessions table
-      db.run(`INSERT INTO chat_sessions (user_id, message) VALUES (?, ?)`, [userId, message], (err) => {
-        if (err) {
-          console.error('Error saving message to the database:', err.message);
+        // Get user ID based on session ID
+        const userId = sessionManager.getUserId(sessionId);
+
+        if (userId) {
+          // Save the message to the chat_sessions table
+          db.run(
+            `INSERT INTO chat_sessions (user_id, message) VALUES (?, ?)`,
+            [userId, text],
+            (err) => {
+              if (err) {
+                console.error('Error saving message to the database:', err.message);
+              } else {
+                console.log('Message saved to the database for user:', userId);
+              }
+            }
+          );
         } else {
-          console.log('Message saved to the database');
+          console.error('Invalid session or user ID');
         }
-      });
+      } catch (error) {
+        console.error('Error processing message:', error);
+      }
     });
 
     // Handle WebSocket closing

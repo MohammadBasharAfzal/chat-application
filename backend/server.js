@@ -15,7 +15,7 @@ app.use(express.json());
 app.use('/api/auth', authRoutes);
 
 // Static files for frontend (if needed later)
-app.use(express.static(path.join(__dirname, '../frontend')));
+app.use(express.static(path.join(__dirname, '../frontend/views')));
 
 // WebSocket server setup
 setupWebSocketServer(server);
