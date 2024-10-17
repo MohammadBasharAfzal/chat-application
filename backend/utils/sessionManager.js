@@ -1,12 +1,12 @@
 const sessions = {};
 
-// Create a new session
-const createSession = (sessionId, client) => {
+// Create a new session and associate it with a userId
+const createSession = (sessionId, userId) => {
   sessions[sessionId] = {
-    client,
+    userId,  // Store userId in session
     messages: []
   };
-  console.log(`Session ${sessionId} created.`);
+  console.log(`Session ${sessionId} created for user ${userId}.`);
 };
 
 // Store message in session
@@ -33,9 +33,15 @@ const endSession = (sessionId) => {
   }
 };
 
+// Function to get userId by sessionId
+const getUserId = (sessionId) => {
+  return sessions[sessionId] ? sessions[sessionId].userId : null; // Return userId if session exists
+};
+
 module.exports = {
   createSession,
   addMessageToSession,
   getSessionMessages,
-  endSession
+  endSession,
+  getUserId
 };
